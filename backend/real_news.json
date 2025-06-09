@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "news": "Title: Wall St. Bears Claw Back Into the Black (Reuters)\n Content: Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again.",
+    "label": "real"
+  },
+  {
+    "id": 2,
+    "news": "Title: Money Funds Fell in Latest Week (AP)\n Content:  AP - Assets of the nation's retail money market mutual funds fell by  #36;1.17 billion in the latest week to  #36;849.98 trillion, the Investment Company Institute said Thursday.",
+    "label": "real"
+  },
+  {
+    "id": 3,
+    "news": "Title: Fed minutes show dissent over inflation (USATODAY.com)\n Content: USATODAY.com - Retail sales bounced back a bit in July, and new claims for jobless benefits fell last week, the government said Thursday, indicating the economy is improving from a midsummer slump.",
+    "label": "real"
+  },
+  {
+    "id": 4,
+    "news": "Title: Safety Net (Forbes.com)\n Content: Forbes.com - After earning a PH.D. in Sociology, Danny Bazil Riley started to work as the general manager at a commercial real estate firm at an annual base salary of  #36;70,000. Soon after, a financial planner stopped by his desk to drop off brochures about insurance benefits available through his employer. But, at 32, buying insurance was the furthest thing from my mind,says Riley.",
+    "label": "real"
+  },
+  {
+    "id": 5,
+    "news": "Title: Rescuing an Old Saver\n Content: If you think you may need to help your elderly relatives with their finances, don't be shy about having the money talk -- soon.",
+    "label": "real"
+  },
+  {
+    "id": 6,
+    "news": "Title: Wall St. Bears Claw Back Into the Black\n Content:  NEW YORK (Reuters) - Short-sellers, Wall Street's dwindling  band of ultra-cynics, are seeing green again.",
+    "label": "real"
+  },
+  {
+    "id": 7,
+    "news": "Title: In a Down Market, Head Toward Value Funds\n Content: There is little cause for celebration in the stock market these days, but investors in value-focused mutual funds have reason to feel a bit smug -- if only because they've lost less than the folks who stuck with growth.",
+    "label": "real"
+  },
+  {
+    "id": 8,
+    "news": "Title: US trade deficit swells in June\n Content: The US trade deficit has exploded 19 to a record 55.8bn as oil costs drove imports higher, according to a latest figures.",
+    "label": "real"
+  },
+  {
+    "id": 9,
+    "news": "Title: Shell 'could be target for Total'\n Content: Oil giant Shell could be bracing itself for a takeover attempt, possibly from French rival Total, a  press report claims.",
+    "label": "real"
+  },
+  {
+    "id": 10,
+    "news": "Title: Google IPO faces Playboy slip-up\n Content: The bidding gets underway for Google's public offering, despite last-minute worries over an interview with its bosses in Playboy magazine.",
+    "label": "real"
+  }
+]
