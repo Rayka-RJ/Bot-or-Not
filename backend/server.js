@@ -13,7 +13,6 @@ function pickModelFromReq(req) {
   return { aiMode, apiKey };
 }
 
-
 // Combined full server.js for both modes (includes T/F question interface)
 const express = require("express");
 const cors = require("cors");
@@ -80,6 +79,8 @@ async function connectDB() {
 
 connectDB();
 
+// ───[Preparation]  User register ────────────
+
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body;
   const userCol = db.collection("users");
@@ -115,6 +116,7 @@ app.post("/api/record", async (req, res) => {
 });
 
 // ───[Preparation] Initialize OpenAI & text processing ──────────────────────────
+
 let defaultOpenAI = null;
 if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== "") {
   defaultOpenAI = new OpenAI({ apiKey: process.env.OPENAI_API_KEY.trim() });
@@ -141,22 +143,6 @@ async function queryLocalModel(messages, temperature = 0.7, max_tokens = 200) {
       })
     });
 
-    // let resultText = "";
-    // if (response.body && typeof response.body.getReader === "function") {
-    //   const reader = response.body.getReader();
-    //   const decoder = new TextDecoder("utf-8");
-    //   while (true) {
-    //     const { done, value } = await reader.read();
-    //     if (done) break;
-    //     resultText += decoder.decode(value, { stream: true });
-    //   }
-    // } else {
-    //   console.log("queryLocalModel: response.body.getReader not available, using response.text()");
-    //   resultText = await response.text();
-    // }
-
-    // console.log("queryLocalModel: full raw response text:");
-    // console.log(resultText);
     const json = await response.json();
     if (!json.message || !json.message.content || typeof json.message.content !== "string") {
       throw new Error("Invalid response from local model");
@@ -164,27 +150,7 @@ async function queryLocalModel(messages, temperature = 0.7, max_tokens = 200) {
     const resultText = json.message.content.trim();
     console.log("queryLocalModel: final generated text:", resultText);
     return resultText;
-    
-    
-
-    
-
-
-    // Split by line, remove empty lines
-    // const lines = resultText.split(/\n/).map(line => line.trim()).filter(line => line.length > 0);
-    // let finalText = "";
-    // for (const line of lines) {
-    //   try {
-    //     const jsonLine = JSON.parse(line);
-    //     if (jsonLine.message && jsonLine.message.content) {
-    //       finalText += jsonLine.message.content;
-    //     }
-    //   } catch (err) {
-    //     console.warn("queryLocalModel: skipping invalid JSON line:", line);
-    //   }
-    // }
-    // console.log("queryLocalModel: final generated text:", finalText);
-    // return finalText;
+ 
   } catch (error) {
     console.error("Local model request error:", error.message);
     throw new Error("LOCAL_MODEL_ERROR");
@@ -470,7 +436,6 @@ app.get("/api/generate-image-tf", async (req, res) => {
 });
 
 
-
 // ====================[Community] Leaderboard API ====================
 app.get("/api/leaderboard", async (req, res) => {
   try {
@@ -525,6 +490,7 @@ app.get("/api/leaderboard", async (req, res) => {
 
 
 // ====================[Community] Add comments API ====================
+
 app.post("/api/add-comment", async (req, res) => {
   const { text } = req.body;
   if (!text || text.trim().length < 5) {
