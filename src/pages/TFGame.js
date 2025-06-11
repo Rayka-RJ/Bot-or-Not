@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../styles.css";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../utils/apiFetch";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations";
 
 /**
  * True / False news game (AI-vs-Human)
@@ -19,10 +21,12 @@ const TFGame = () => {
   const [errorMsg, setErrorMsg]     = useState("");
 
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   /* fetch questions once */
   useEffect(() => {
-    apiFetch("http://localhost:5000/api/generate-tf")
+    apiFetch(`http://localhost:5000/api/generate-tf?lang=${language}`)
       .then(async (res) => {
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
@@ -47,7 +51,7 @@ const TFGame = () => {
         );
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [language]);
 
   /* helper – split prompt into title / content */
   const parsePrompt = (prompt) => {
@@ -69,7 +73,7 @@ const TFGame = () => {
     setSelected(ans);
     const correctIsHuman = questions[idx].correctAnswer === "True";
     const isRight = (correctIsHuman && ans === "human") || (!correctIsHuman && ans === "ai");
-    setFeedback(isRight ? "✅ Correct!" : `❌ Incorrect. It was written by ${correctIsHuman ? "a Human." : "an AI."}`);
+    setFeedback(isRight ? t.correct : `${t.incorrect} ${correctIsHuman ? t.human : t.ai}`);
     if (isRight) setScore((s) => s + 1);
   };
 
@@ -82,7 +86,7 @@ const TFGame = () => {
       return;
     }
 
-    alert(`Game Over! Your score: ${score}/${questions.length}`);
+    alert(`${t.gameOver} ${score}/${questions.length}`);
     const token = localStorage.getItem("token");
     try {
       await apiFetch("http://localhost:5000/api/record", {
@@ -104,7 +108,7 @@ const TFGame = () => {
     return (
       <div className="loading-container">
         <div className="loading-spinner" />
-        <p className="loading-text">Loading Bot or Not…</p>
+        <p className="loading-text">{t.loading}</p>
       </div>
     );
   }
@@ -113,10 +117,10 @@ const TFGame = () => {
   if (errorMsg) {
     return (
       <div className="game-container">
-        <h1 className="game-title">Oops!</h1>
+        <h1 className="game-title">{t.newsGameTitle}</h1>
         <p className="feedback">{errorMsg}</p>
         <button className="next-button" onClick={() => navigate("/")}>
-          Back to Home
+          {t.backToHome}
         </button>
       </div>
     );
@@ -128,11 +132,11 @@ const TFGame = () => {
 
   return (
     <div className="game-container">
-      <h1 className="game-title">Bot or Not? – Human or AI?</h1>
+      <h1 className="game-title">{t.newsGameTitle}</h1>
 
       <div className="question-box">
-        <p><strong>Title:</strong> {title}</p>
-        <p><strong>Content:</strong> {content}</p>
+        <p><strong>{t.title}:</strong> {title}</p>
+        <p><strong>{t.content}:</strong> {content}</p>
       </div>
 
       <div className="options">
@@ -145,7 +149,7 @@ const TFGame = () => {
             onClick={() => handleAnswer(side)}
             disabled={selected !== null}
           >
-            {side === "human" ? "Human" : "AI"}
+            {side === "human" ? t.human : t.ai}
           </button>
         ))}
       </div>
@@ -154,7 +158,7 @@ const TFGame = () => {
 
       {selected && (
         <button className="next-button" onClick={nextQuestion}>
-          Next Question
+          {t.nextQuestion}
         </button>
       )}
     </div>

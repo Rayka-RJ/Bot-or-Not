@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import { apiFetch } from "../utils/apiFetch";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations";
 
 const ImageTFGame = () => {
   // State to hold all fetched questions
@@ -12,10 +14,12 @@ const ImageTFGame = () => {
   const [score, setScore] = useState(0);                // User's score
   const [loading, setLoading] = useState(true);         // Loading state
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   // Fetch questions from backend when component mounts
   useEffect(() => {
-    apiFetch("http://localhost:5000/api/generate-image-tf")
+    apiFetch(`http://localhost:5000/api/generate-image-tf?lang=${language}`)
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data.questions || []);
@@ -25,7 +29,7 @@ const ImageTFGame = () => {
         console.error("Error loading image T/F questions:", err);
         setLoading(false);
       });
-  }, []);
+  }, [language]);
 
   // Get the current question
   const current = questions[currentIndex];
@@ -34,10 +38,10 @@ const ImageTFGame = () => {
   const handleAnswer = (answer) => {
     setSelected(answer);
     if (answer === current.correctAnswer) {
-      setFeedback("Correct!");
+      setFeedback(t.correct);
       setScore(score + 1);
     } else {
-      setFeedback(`Incorrect. It was by a ${current.correctAnswer === "ai" ? "AI" : "Human"}.`);
+      setFeedback(`${t.incorrect} ${current.correctAnswer === "ai" ? t.ai : t.human}`);
     }
   };
 
@@ -51,7 +55,7 @@ const ImageTFGame = () => {
       setSelected(null);
       setFeedback("");
     } else {
-      alert(`Game Over! Your score: ${score}/${questions.length}`);
+      alert(`${t.gameOver} ${score}/${questions.length}`);
 
       const token = localStorage.getItem("token");
 
@@ -91,18 +95,18 @@ const ImageTFGame = () => {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p className="loading-text">Loading Image Game...</p>
+        <p className="loading-text">{t.loading}</p>
       </div>
     );
   }
 
   // Handle edge case where no questions were returned
-  if (!current) return <p>No questions available.</p>;
+  if (!current) return <p>{t.loading}</p>;
 
   // Main game UI
   return (
     <div className="game-container">
-      <h1 className="game-title">Is this image from a Human or AI?</h1>
+      <h1 className="game-title">{t.imageGameTitle}</h1>
 
       <div className="question-box">
         <img src={current.imageUrl} alt="Guess" className="game-image" />
@@ -115,14 +119,14 @@ const ImageTFGame = () => {
           onClick={() => handleAnswer("human")}
           disabled={selected !== null}
         >
-          Human
+          {t.human}
         </button>
         <button
           className={`option-card ${selected === "ai" ? "selected" : ""}`}
           onClick={() => handleAnswer("ai")}
           disabled={selected !== null}
         >
-          AI
+          {t.ai}
         </button>
       </div>
 
@@ -130,7 +134,7 @@ const ImageTFGame = () => {
 
       {selected !== null && (
         <button className="next-button" onClick={next}>
-          Next Image
+          {t.nextQuestion}
         </button>
       )}
     </div>

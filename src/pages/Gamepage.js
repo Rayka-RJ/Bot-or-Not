@@ -2,25 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles.css";
 import { apiFetch } from "../utils/apiFetch";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations";
 
 /**
  * GamePage – multiple-choice text mode (fallback redirects image mode to /imagetf)
  */
 const GamePage = () => {
-  const { mode }           = useParams();
-  const navigate           = useNavigate();
+  const { mode } = useParams();
+  const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   // basic game state
-  const [questions, setQuestions]       = useState([]);
-  const [current, setCurrent]           = useState(0);
-  const [selected, setSelected]         = useState(null);
-  const [feedback, setFeedback]         = useState("");
-  const [score, setScore]               = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [feedback, setFeedback] = useState("");
+  const [score, setScore] = useState(0);
 
   // ui state
-  const [loading, setLoading]           = useState(true);
-  const [hasFetched, setHasFetched]     = useState(false);
-  const [errorMsg, setErrorMsg]         = useState("");   // ← NEW
+  const [loading, setLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   /* Redirect “/game/image” to the dedicated T/F image game */
   useEffect(() => {
@@ -32,7 +36,7 @@ const GamePage = () => {
     if (hasFetched) return;
     setHasFetched(true);
 
-    apiFetch("http://localhost:5000/api/generate-multi")
+    apiFetch(`http://localhost:5000/api/generate-multi?lang=${language}`)
       .then(async (res) => {
         if (!res.ok) {
           // attempt to read backend error; default fallback
@@ -55,13 +59,13 @@ const GamePage = () => {
         );
       })
       .finally(() => setLoading(false));
-  }, [mode, hasFetched, navigate]);
+  }, [mode, hasFetched, navigate, language]);
 
   /* Handle answer click */
   const handleAnswerClick = (option) => {
     setSelected(option);
     const isCorrect = option.source === questions[current].correctAnswer;
-    setFeedback(isCorrect ? "Correct!" : "Incorrect.");
+    setFeedback(isCorrect ? t.correct : t.incorrect);
     if (isCorrect) setScore((s) => s + 1);
   };
 
@@ -74,7 +78,7 @@ const GamePage = () => {
       return;
     }
 
-    alert(`Game Over! Your score: ${score}/${questions.length}`);
+    alert(`${t.gameOver} ${score}/${questions.length}`);
     const token = localStorage.getItem("token");
     try {
       await apiFetch("http://localhost:5000/api/record", {
@@ -96,7 +100,7 @@ const GamePage = () => {
     return (
       <div className="loading-container">
         <div className="loading-spinner" />
-        <p className="loading-text">Loading Bot or Not…</p>
+        <p className="loading-text">{t.loading}</p>
       </div>
     );
   }
@@ -105,10 +109,10 @@ const GamePage = () => {
   if (errorMsg) {
     return (
       <div className="game-container">
-        <h1 className="game-title">Oops!</h1>
+        <h1 className="game-title">{t.textRecognitionGame}</h1>
         <p className="feedback">{errorMsg}</p>
         <button className="next-button" onClick={() => navigate("/")}>
-          Back to Home
+          {t.backToHome}
         </button>
       </div>
     );
@@ -118,7 +122,7 @@ const GamePage = () => {
   const q = questions[current];
   return (
     <div className="game-container">
-      <h1 className="game-title">Text Recognition Game</h1>
+      <h1 className="game-title">{t.textRecognitionGame}</h1>
 
       <div className="question-box">
         <p>{q.prompt}</p>
@@ -147,7 +151,7 @@ const GamePage = () => {
 
       {selected && (
         <button className="next-button" onClick={nextQuestion}>
-          Next Question
+          {t.nextQuestion}
         </button>
       )}
     </div>

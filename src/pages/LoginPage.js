@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import { apiFetch } from "../utils/apiFetch";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations";
 
 const LoginPage = ({ mode }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const submit = async () => {
     const res = await apiFetch(`http://localhost:5000/api/${mode}`, {
@@ -22,7 +26,6 @@ const LoginPage = ({ mode }) => {
         localStorage.setItem("username", username);
         navigate("/");
       } else if (mode === "register") {
-        // After register, go to login page
         navigate("/login");
       }
     } else {
@@ -32,24 +35,24 @@ const LoginPage = ({ mode }) => {
 
   return (
     <div className="login-container" autoComplete="off">
-        <h1>{mode === "login" ? "Login" : "Register"}</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          autoComplete="username"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          autoComplete="new-password"
-        />
-        <button onClick={submit}>
-          {mode === "login" ? "Login" : "Register"}
-        </button>
+      <h1>{mode === "login" ? t.login : t.register}</h1>
+      <input
+        type="text"
+        placeholder={t.username}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        autoComplete="username"
+      />
+      <input
+        type="password"
+        placeholder={t.password}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        autoComplete="new-password"
+      />
+      <button onClick={submit}>
+        {mode === "login" ? t.login : t.register}
+      </button>
     </div>
   );
 };
