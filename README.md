@@ -15,6 +15,20 @@
 - [MongoDB](https://www.mongodb.com/) (local or MongoDB Atlas)
 - OpenAI API Key (if generating questions dynamically)
 
+### Running the Backend
+```bash
+cd backend
+npm install
+npm start
+```
+
+### Running the Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+
 ---
 
 ## Section 1: General
