@@ -22,17 +22,6 @@ const allowedOrigins = [
   "https://bot-or-not-five.vercel.app"
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
-
 const { MongoClient } = require("mongodb");
 const { OpenAI } = require("openai"); // Only used in OpenAI mode
 const fetch = require("node-fetch");  // Used to call local REST APIs such as Ollama
@@ -46,7 +35,17 @@ const JWT_SECRET = process.env.JWT_SECRET || "it5007secret";
 
 const app = express();
 const PORT = 5000;
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 const client = new MongoClient(process.env.MONGODB_URI);
