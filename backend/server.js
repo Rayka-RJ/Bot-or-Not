@@ -16,6 +16,23 @@ function pickModelFromReq(req) {
 // Combined full server.js for both modes (includes T/F question interface)
 const express = require("express");
 const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://bot-or-not-five.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
 const { MongoClient } = require("mongodb");
 const { OpenAI } = require("openai"); // Only used in OpenAI mode
 const fetch = require("node-fetch");  // Used to call local REST APIs such as Ollama
