@@ -5,6 +5,6 @@ export async function apiFetch(url, options = {}) {
       "x-openai-key": localStorage.getItem("openaiKey") || ""
     };
   
-    return fetch(url, { ...options, headers });
+  return fetch(`https://bot-or-not-jz7o.onrender.com${url}`, { ...options, headers });
   }
   
