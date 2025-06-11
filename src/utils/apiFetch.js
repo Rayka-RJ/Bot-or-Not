@@ -1,12 +1,13 @@
-const BASE = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+import config from '../config';
 
-export async function apiFetch(url, options = {}) {
+export async function apiFetch(endpoint, options = {}) {
+    const url = endpoint.startsWith('http') ? endpoint : `${config.apiUrl}${endpoint}`;
     const headers = {
       ...options.headers,
-      "x-ai-mode":   localStorage.getItem("aiMode")   || "free",
+      "x-ai-mode": localStorage.getItem("aiMode") || "free",
       "x-openai-key": localStorage.getItem("openaiKey") || ""
     };
   
     return fetch(url, { ...options, headers });
-  }
+}
   

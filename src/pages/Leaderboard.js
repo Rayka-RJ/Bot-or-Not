@@ -28,7 +28,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    apiFetch("http://localhost:5000/api/leaderboard", {
+    apiFetch("/api/leaderboard", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -62,7 +62,7 @@ const Leaderboard = () => {
         )}
       </div>
       <button className="back-button" onClick={() => navigate("/")}>{t.backToHome}</button>
-    </div>
+      </div>
   );
 };
 

@@ -13,7 +13,7 @@ const LoginPage = ({ mode }) => {
   const t = translations[language];
 
   const submit = async () => {
-    const res = await apiFetch(`http://localhost:5000/api/${mode}`, {
+    const res = await apiFetch(`/api/${mode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -36,23 +36,23 @@ const LoginPage = ({ mode }) => {
   return (
     <div className="login-container" autoComplete="off">
       <h1>{mode === "login" ? t.login : t.register}</h1>
-      <input
-        type="text"
+        <input
+          type="text"
         placeholder={t.username}
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        autoComplete="username"
-      />
-      <input
-        type="password"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          autoComplete="username"
+        />
+        <input
+          type="password"
         placeholder={t.password}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        autoComplete="new-password"
-      />
-      <button onClick={submit}>
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="new-password"
+        />
+        <button onClick={submit}>
         {mode === "login" ? t.login : t.register}
-      </button>
+        </button>
     </div>
   );
 };

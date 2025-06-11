@@ -19,7 +19,7 @@ const ImageTFGame = () => {
 
   // Fetch questions from backend when component mounts
   useEffect(() => {
-    apiFetch(`http://localhost:5000/api/generate-image-tf?lang=${language}`)
+    apiFetch(`/api/generate-image-tf?lang=${language}`)
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data.questions || []);
@@ -61,7 +61,7 @@ const ImageTFGame = () => {
 
       if (token) {
         try {
-          const res = await apiFetch("http://localhost:5000/api/record", {
+          const res = await apiFetch("/api/record", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

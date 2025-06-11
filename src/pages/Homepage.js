@@ -8,7 +8,7 @@ import { translations } from "../translations";
 const Homepage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(false); 
   const { language, toggleLanguage } = useLanguage();
   const t = translations[language];
 

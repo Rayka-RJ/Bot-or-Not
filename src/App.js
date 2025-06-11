@@ -27,18 +27,18 @@ function App() {
 
   return (
     <LanguageProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/game/:mode" element={<GamePage />} />
-          <Route path="/tfgame" element={<TFGame />} />
-          <Route path="/imagetf" element={<ImageTFGame />} />
-          <Route path="/login" element={<LoginPage mode="login" />} />
-          <Route path="/register" element={<LoginPage mode="register" />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/submit" element={<SubmitPage />} />  
-        </Routes>
-      </Router>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/game/:mode" element={<GamePage />} />
+        <Route path="/tfgame" element={<TFGame />} />
+        <Route path="/imagetf" element={<ImageTFGame />} />
+        <Route path="/login" element={<LoginPage mode="login" />} />
+        <Route path="/register" element={<LoginPage mode="register" />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/submit" element={<SubmitPage />} />  
+      </Routes>
+    </Router>
     </LanguageProvider>
   );
 }

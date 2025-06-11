@@ -26,7 +26,7 @@ const GamePage = () => {
   const [hasFetched, setHasFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  /* Redirect “/game/image” to the dedicated T/F image game */
+  /* Redirect "/game/image" to the dedicated T/F image game */
   useEffect(() => {
     if (mode === "image") {
       navigate("/imagetf", { replace: true });
@@ -36,7 +36,7 @@ const GamePage = () => {
     if (hasFetched) return;
     setHasFetched(true);
 
-    apiFetch(`http://localhost:5000/api/generate-multi?lang=${language}`)
+    apiFetch(`/api/generate-multi?lang=${language}`)
       .then(async (res) => {
         if (!res.ok) {
           // attempt to read backend error; default fallback
@@ -81,7 +81,7 @@ const GamePage = () => {
     alert(`${t.gameOver} ${score}/${questions.length}`);
     const token = localStorage.getItem("token");
     try {
-      await apiFetch("http://localhost:5000/api/record", {
+      await apiFetch("/api/record", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

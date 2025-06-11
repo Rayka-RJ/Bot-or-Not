@@ -26,7 +26,7 @@ const TFGame = () => {
 
   /* fetch questions once */
   useEffect(() => {
-    apiFetch(`http://localhost:5000/api/generate-tf?lang=${language}`)
+    apiFetch(`/api/generate-tf?lang=${language}`)
       .then(async (res) => {
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
@@ -89,7 +89,7 @@ const TFGame = () => {
     alert(`${t.gameOver} ${score}/${questions.length}`);
     const token = localStorage.getItem("token");
     try {
-      await apiFetch("http://localhost:5000/api/record", {
+      await apiFetch("/api/record", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
