@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations } from "../i18n/translations";
+import { apiFetch } from "../lib/apiFetch";
 
 const SubmitPage: React.FC = () => {
   const [news, setNews] = useState("");
@@ -24,7 +25,7 @@ const SubmitPage: React.FC = () => {
     }
 
     try {
-      const res = await fetch("/api/add-news", {
+      const res = await apiFetch("/api/add-news", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ news, comment, language }),

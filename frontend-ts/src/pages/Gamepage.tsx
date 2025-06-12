@@ -84,15 +84,39 @@ const GamePage: React.FC = () => {
     }
   };
 
-  if (loading) return <p className="loading-text">{t.loading}</p>;
-  if (errorMsg) return <p className="feedback">{errorMsg}</p>;
+  /* Loading screen */
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner" />
+        <p className="loading-text">{t.loading}</p>
+      </div>
+    );
+  }
+
+  /* Error screen */
+  if (errorMsg) {
+    return (
+      <div className="game-container">
+        <h1 className="game-title">{t.textRecognitionGame}</h1>
+        <p className="feedback">{errorMsg}</p>
+        <button className="next-button" onClick={() => navigate("/")}>
+          {t.backToHome}
+        </button>
+      </div>
+    );
+  }
 
   const q = questions[current];
 
   return (
     <div className="game-container">
-      <h1>{t.textRecognitionGame}</h1>
-      <p>{q.prompt}</p>
+      <h1 className="game-title">{t.textRecognitionGame}</h1>
+
+      <div className="question-box">
+        <p>{q.prompt}</p>
+      </div>
+
       <div className="options">
         {q.options.map((opt, idx) => (
           <button
@@ -100,18 +124,24 @@ const GamePage: React.FC = () => {
             onClick={() => handleAnswerClick(opt)}
             disabled={!!selected}
             className={`option-card ${selected === opt
-                ? opt.source === q.correctAnswer
-                  ? "correct"
-                  : "incorrect"
-                : ""
+              ? opt.source === q.correctAnswer
+                ? "correct"
+                : "incorrect"
+              : ""
               }`}
           >
             {opt.text}
           </button>
         ))}
       </div>
+
       {feedback && <p className="feedback">{feedback}</p>}
-      {selected && <button onClick={nextQuestion}>{t.nextQuestion}</button>}
+
+      {selected && (
+        <button className="next-button" onClick={nextQuestion}>
+          {t.nextQuestion}
+        </button>
+      )}
     </div>
   );
 };
