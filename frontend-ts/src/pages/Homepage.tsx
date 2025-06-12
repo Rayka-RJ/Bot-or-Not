@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import SettingsModal from "../components/SettingsModal";
 import { useLanguage } from "../contexts/LanguageContext";
-import { translations } from "../i18n/translations";
+import { translations } from "../i18n/translations/index";
 
-const Homepage = () => {
+const Homepage: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [showSettings, setShowSettings] = useState(false); 

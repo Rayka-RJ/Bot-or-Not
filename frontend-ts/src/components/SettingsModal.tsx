@@ -19,18 +19,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
     <div className="settings-modal-backdrop">
       <div className="settings-modal">
         <h2>Settings</h2>
-        <label>AI Mode:</label>
-        <select value={mode} onChange={(e) => setMode(e.target.value)}>
-          <option value="free">Free</option>
-          <option value="custom">Custom</option>
-        </select>
 
-        <label>OpenAI Key:</label>
-        <input
-          type="text"
-          value={customKey}
-          onChange={(e) => setCustomKey(e.target.value)}
-        />
+        <div className="form-group">
+          <label htmlFor="aiMode">AI Mode:</label>
+          <select
+            id="aiMode"
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+          >
+            <option value="free">Free</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="openaiKey">OpenAI Key:</label>
+          <input
+            id="openaiKey"
+            type="text"
+            value={customKey}
+            onChange={(e) => setCustomKey(e.target.value)}
+          />
+        </div>
 
         <div className="modal-actions">
           <button onClick={handleSave}>Save</button>
@@ -42,4 +52,3 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
 };
 
 export default SettingsModal;
-

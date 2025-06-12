@@ -1,4 +1,22 @@
 /* background */
+.settings-modal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.settings-modal select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  background: #2b2d33;
+  border: 1px solid #3b3d44;
+  border-radius: 6px;
+  color: #f1f1f1;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
 .settings-modal-backdrop {
     position: fixed;
     inset: 0;
