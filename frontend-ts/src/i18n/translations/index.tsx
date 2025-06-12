@@ -1,0 +1,100 @@
+export const translations = {
+  en: {
+    welcome: "Welcome",
+    login: "Login",
+    register: "Register",
+    logout: "Logout",
+    leaderboard: "Leaderboard",
+    settings: "Settings",
+    homepageTitle: "Bot or Not?",
+    homepageDescription: "Can you tell AI from a human?",
+    playTextGame: "Play Text Recognition Game",
+    playImageGame: "Play True/False Image Game",
+    playNewsGame: "Play True/False News Game",
+    submitNews: "Submit Your News & Comment to cheat others!",
+    language: "Language",
+    switchToChinese: "Chinese/English",
+    switchToEnglish: "Chinese/English",
+    // Game related translations
+    loading: "Loading Bot or Not...",
+    nextQuestion: "Next Question",
+    correct: "Correct!",
+    incorrect: "Incorrect",
+    gameOver: "Game Over! Your score:",
+    backToHome: "Back to Home",
+    // Image game specific
+    imageGameTitle: "Is this image from a Human or AI?",
+    human: "Human",
+    ai: "AI",
+    // News game specific
+    newsGameTitle: "Bot or Not? – Human or AI?",
+    title: "Title",
+    content: "Content",
+    // Submit page
+    submitTitle: "Submit Your news & comments to cheat others!!!",
+    news: "News",
+    newsPlaceholder: "Please enter your news content...",
+    comment: "Comment",
+    commentPlaceholder: "Please enter your comment...",
+    submit: "Submit",
+    submitSuccess: "Submit Successfully! Thanks for contribution.",
+    submitError: "Error:",
+    networkError: "Connect error, please check out your network.",
+    textRecognitionGame: "Text Recognition Game",
+    // Login page
+    username: "Username",
+    password: "Password",
+    // Leaderboard
+    yourBest: "Your best",
+    submitValidation: "Please enter a meaningful and complete comments"
+  },
+  zh: {
+    welcome: "欢迎",
+    login: "登录",
+    register: "注册",
+    logout: "退出",
+    leaderboard: "排行榜",
+    settings: "设置",
+    homepageTitle: "机器人还是人类？",
+    homepageDescription: "你能分辨出AI和人类的区别吗？",
+    playTextGame: "玩文本识别游戏",
+    playImageGame: "玩图片真伪游戏",
+    playNewsGame: "玩新闻真伪游戏",
+    submitNews: "提交你的新闻和评论来迷惑他人！",
+    language: "语言",
+    switchToChinese: "中文/英文",
+    switchToEnglish: "中文/英文",
+    // Game related translations
+    loading: "正在加载...",
+    nextQuestion: "下一题",
+    correct: "正确！",
+    incorrect: "错误",
+    gameOver: "游戏结束！你的得分：",
+    backToHome: "返回主页",
+    // Image game specific
+    imageGameTitle: "这张图片是来自人类还是AI？",
+    human: "人类",
+    ai: "AI",
+    // News game specific
+    newsGameTitle: "机器人还是人类？—— 新闻真伪",
+    title: "标题",
+    content: "内容",
+    // Submit page
+    submitTitle: "提交你的新闻和评论来迷惑他人！！！",
+    news: "新闻",
+    newsPlaceholder: "请输入新闻内容...",
+    comment: "评论",
+    commentPlaceholder: "请输入评论...",
+    submit: "提交",
+    submitSuccess: "提交成功！感谢您的贡献。",
+    submitError: "错误：",
+    networkError: "连接错误，请检查网络。",
+    textRecognitionGame: "文本识别游戏",
+    // Login page
+    username: "用户名",
+    password: "密码",
+    // Leaderboard
+    yourBest: "你的最佳成绩",
+    submitValidation: "请输入有意义的完整评论"
+  }
+}; 
