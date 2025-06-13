@@ -6,7 +6,7 @@ export const translations = {
     logout: "Logout",
     leaderboard: "Leaderboard",
     settings: "Settings",
-    homepageTitle: "Bot or Not?",
+    homepageTitle: "Bot or Not ???",
     homepageDescription: "Can you tell AI from a human?",
     playTextGame: "Play Text Recognition Game",
     playImageGame: "Play True/False Image Game",
