@@ -30,7 +30,7 @@ require("dotenv").config();
 
 // For login and register
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const JWT_SECRET = process.env.JWT_SECRET || "it5007secret";
 
 const app = express();

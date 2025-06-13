@@ -9,17 +9,17 @@ import { TFQuestion } from "../types";
 /**
  * True / False news game (AI-vs-Human)
  */
-const TFGame : React.FC = () => {
+const TFGame: React.FC = () => {
   /* game state */
-  const [questions, setQuestions]   = useState<TFQuestion[]>([]);
-  const [idx, setIdx]               = useState(0);
-  const [selected, setSelected]     = useState<"human" | "ai" | null>(null);
-  const [feedback, setFeedback]     = useState("");
-  const [score, setScore]           = useState(0);
+  const [questions, setQuestions] = useState<TFQuestion[]>([]);
+  const [idx, setIdx] = useState(0);
+  const [selected, setSelected] = useState<"human" | "ai" | null>(null);
+  const [feedback, setFeedback] = useState("");
+  const [score, setScore] = useState(0);
 
   /* ui state */
-  const [loading, setLoading]       = useState(true);
-  const [errorMsg, setErrorMsg]     = useState("");
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -82,36 +82,66 @@ const TFGame : React.FC = () => {
     }
   };
 
-  if (loading) return <p>{t.loading}</p>;
-  if (errorMsg) return <p className="feedback">{errorMsg}</p>;
+  /* Loading view */
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner" />
+        <p className="loading-text">{t.loading}</p>
+      </div>
+    );
+  }
+
+  /* Error view */
+  if (errorMsg) {
+    return (
+      <div className="game-container">
+        <h1 className="game-title">{t.newsGameTitle}</h1>
+        <p className="feedback">{errorMsg}</p>
+        <button className="next-button" onClick={() => navigate("/")}>
+          {t.backToHome}
+        </button>
+      </div>
+    );
+  }
 
   const q = questions[idx];
   const { title, content } = parsePrompt(q.prompt);
 
   return (
     <div className="game-container">
-      <h1>{t.newsGameTitle}</h1>
-      <p><strong>{t.title}:</strong> {title}</p>
-      <p><strong>{t.content}:</strong> {content}</p>
+      <h1 className="game-title">{t.newsGameTitle}</h1>
 
-      {["human", "ai"].map((side) => (
-        <button
-          key={side}
-          onClick={() => handleAnswer(side as "human" | "ai")}
-          disabled={selected !== null}
-          className={`option-card ${selected === side
+      <div className="question-box">
+        <p><strong>{t.title}:</strong> {title}</p>
+        <p><strong>{t.content}:</strong> {content}</p>
+      </div>
+
+      <div className="options">
+        {["human", "ai"].map((side) => (
+          <button
+            key={side}
+            onClick={() => handleAnswer(side as "human" | "ai")}
+            disabled={selected !== null}
+            className={`option-card ${selected === side
               ? (q.correctAnswer === "True" && side === "human") || (q.correctAnswer === "False" && side === "ai")
                 ? "correct"
                 : "incorrect"
               : ""
-            }`}
-        >
-          {side === "human" ? t.human : t.ai}
-        </button>
-      ))}
+              }`}
+          >
+            {side === "human" ? t.human : t.ai}
+          </button>
+        ))}
+      </div>
 
       {feedback && <p className="feedback">{feedback}</p>}
-      {selected && <button onClick={next}>{t.nextQuestion}</button>}
+
+      {selected && (
+        <button className="next-button" onClick={next}>
+          {t.nextQuestion}
+        </button>
+      )}
     </div>
   );
 };
