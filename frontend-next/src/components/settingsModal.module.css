@@ -1,0 +1,103 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+.modal {
+  width: 420px;
+  max-width: 90vw;
+  background: #1e1f24;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  padding: 26px 32px;
+  color: #ffffff;
+  animation: pop-in 0.25s ease-out forwards;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
+  color: #61dafb;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 14px;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.modal input[type="radio"] {
+  accent-color: #61dafb;
+  transform: translateY(1px);
+  margin-right: 8px;
+}
+
+.modal input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  background: #2b2d33;
+  border: 1px solid #3b3d44;
+  border-radius: 6px;
+  color: #f1f1f1;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.modal input[type="text"]::placeholder {
+  color: #777a81;
+}
+
+.actions {
+  margin-top: 22px;
+  text-align: right;
+}
+
+.actions button {
+  padding: 8px 18px;
+  margin-left: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: #61dafb;
+  color: #1e1f24;
+}
+
+.actions button:hover {
+  background: #52c7e5;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

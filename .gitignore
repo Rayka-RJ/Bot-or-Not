@@ -41,3 +41,9 @@ lerna-debug.log*
 backend/resized/
 backend/original/
 
+docker-compose.yml
+docker-compose-next.yml
+
+*.Dockerfile
+
+
