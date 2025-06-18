@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # NestJS Backend
+  nestjs-backend:
+    build:
+      context: ./backend-nest
+      dockerfile: backend-nest.Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - TEXT_GENERATION_SERVICE_URL=http://text-generation:8001
+      - IMAGE_GENERATION_SERVICE_URL=http://image-generation:8002
+    depends_on:
+      - text-generation
+      - image-generation
+    networks:
+      - bot-or-not-network
+
+  # Text Generation Microservice
+  text-generation:
+    build:
+      context: ./backend-nest/src
+      dockerfile: microservices/text-generation/text-generation.Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - bot-or-not-network
+
+  # Image Generation Microservice
+  image-generation:
+    build:
+      context: ./backend-nest/src
+      dockerfile: microservices/image-generation/image-generation.Dockerfile
+    ports:
+      - "8002:8002"
+    environment:
+      - DEEPAI_API_KEY=${DEEPAI_API_KEY}
+    networks:
+      - bot-or-not-network
+
+  # Next.js Frontend (optional, if you want to run it in Docker)
+  frontend-next:
+    build:
+      context: .
+      dockerfile: frontend-next.dev.Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./frontend-next:/app
+      - /app/node_modules
+    depends_on:
+      - nestjs-backend
+    environment:
+      # Next.js specific environment variables
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+      # Enable hot reload in Docker - Critical for Windows
+      - WDS_SOCKET_HOST=127.0.0.1
+      - WDS_SOCKET_PORT=3000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      # Webpack specific settings
+      - WEBPACK_POLLING=true
+      # Disable telemetry (optional)
+      # - NEXT_TELEMETRY_DISABLED=1
+    networks:
+      - bot-or-not-network
+
+networks:
+  bot-or-not-network:
+    driver: bridge

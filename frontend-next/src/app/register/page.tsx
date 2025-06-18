@@ -14,17 +14,29 @@ export default function RegisterPage() {
     const t = translations[language]
 
     const submit = async () => {
-        const res = await apiFetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
-        })
+        try {
+            const res = await apiFetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
 
-        const data = await res.json()
-        if (res.ok) {
-            router.push('/login')
-        } else {
-            alert(data.error)
+            if (!res.ok) {
+                const errorText = await res.text(); 
+                throw new Error(`Server error: ${errorText}`);
+            }
+
+            const data = await res.json()
+
+            if (res.ok) {
+                router.push('/login')
+            } else {
+                alert(data.message || data.error || 'Registration failed')
+            }
+            
+        } catch (error) {
+            console.error('Registration error:', error)
+            alert('Registration failed. Please try again.')
         }
     }
 

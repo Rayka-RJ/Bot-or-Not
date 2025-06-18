@@ -5,7 +5,7 @@ export async function apiFetch(
     options: RequestInit = {}
 ): Promise<Response> {
     const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-    const url = endpoint.startsWith('http') ? endpoint : `${API_URL}${path}`
+    const url = endpoint.startsWith('http') ? endpoint : `/api/backend${path}`
 
     const headers = {
         ...options.headers,
