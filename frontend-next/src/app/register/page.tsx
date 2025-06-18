@@ -15,7 +15,7 @@ export default function RegisterPage() {
 
     const submit = async () => {
         try {
-            const res = await apiFetch('/register', {
+            const res = await apiFetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
