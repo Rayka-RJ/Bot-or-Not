@@ -23,10 +23,7 @@ export default function LeaderboardPage() {
     const t = translations[language]
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        apiFetch('/api/leaderboard', {
-            headers: { Authorization: `Bearer ${token}` },
-        })
+        apiFetch('/api/leaderboard')
             .then((res) => res.json())
             .then(setData)
             .catch((err) => console.error('Leaderboard fetch failed:', err))

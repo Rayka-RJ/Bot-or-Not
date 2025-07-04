@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { apiFetch } from '@/lib/apiFetch'
 import { useLanguage } from '@/contexts/languageContext'
@@ -12,6 +12,17 @@ export default function LoginPage() {
     const router = useRouter()
     const { language } = useLanguage()
     const t = translations[language]
+
+    // 自动填充用户名和密码（从url参数获取）
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search)
+            const u = params.get('username')
+            const p = params.get('password')
+            if (u) setUsername(u)
+            if (p) setPassword(p)
+        }
+    }, [])
 
     const submit = async () => {
         const res = await apiFetch('/api/login', {
@@ -33,13 +44,14 @@ export default function LoginPage() {
     return (
         <div className="login-container">
             <h1>{t.login}</h1>
-
+            <form autoComplete="off" onSubmit={e => { e.preventDefault(); submit(); }}>
             <input
                 type="text"
                 placeholder={t.username}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                autoComplete="username"
+                autoComplete="off"
+                name="username"
             />
 
             <input
@@ -47,12 +59,15 @@ export default function LoginPage() {
                 placeholder={t.password}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
+                autoComplete="new-password"
+                name="password"
             />
 
-            <button onClick={submit}>
+            <button type="submit">
                 {t.login}
             </button>
+            <button style={{ marginTop: 10 }} onClick={() => router.push('/')}>{t.backToHome}</button>
+            </form>
         </div>
     )
 }

@@ -9,11 +9,25 @@ import { translations } from '@/i18n/translations'
 export default function RegisterPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const router = useRouter()
     const { language } = useLanguage()
     const t = translations[language]
 
     const submit = async () => {
+        setError('')
+        if (!username) {
+            setError(t.username + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty'))
+            return
+        }
+        if (!password) {
+            setError(t.password + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty'))
+            return
+        }
+        if (password.length < 6) {
+            setError(language === 'zh' ? '密码长度不能少于6位' : 'Password must be at least 6 characters')
+            return
+        }
         try {
             const res = await apiFetch('/api/register', {
                 method: 'POST',
@@ -23,27 +37,29 @@ export default function RegisterPage() {
 
             if (!res.ok) {
                 const errorText = await res.text(); 
-                throw new Error(`Server error: ${errorText}`);
+                setError(errorText)
+                return
             }
 
             const data = await res.json()
 
             if (res.ok) {
-                router.push('/login')
+                // 注册成功后跳转到登录页，并传递用户名和密码
+                router.push(`/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
             } else {
-                alert(data.message || data.error || 'Registration failed')
+                setError(data.message || data.error || (language === 'zh' ? '注册失败' : 'Registration failed'))
             }
             
         } catch (error) {
             console.error('Registration error:', error)
-            alert('Registration failed. Please try again.')
+            setError(language === 'zh' ? '注册失败，请重试。' : 'Registration failed. Please try again.')
         }
     }
 
     return (
         <div className="login-container">
             <h1>{t.register}</h1>
-
+            {error && <div style={{ color: 'red', marginBottom: 10 }}>{error}</div>}
             <input
                 type="text"
                 placeholder={t.username}
@@ -63,6 +79,7 @@ export default function RegisterPage() {
             <button onClick={submit}>
                 {t.register}
             </button>
+            <button style={{ marginTop: 10 }} onClick={() => router.push('/')}>{t.backToHome}</button>
         </div>
     )
 }

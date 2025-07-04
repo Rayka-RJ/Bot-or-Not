@@ -51,19 +51,16 @@ export default function ImageGamePage() {
         } else {
             alert(`${t.gameOver} ${score}/${questions.length}`)
             const token = localStorage.getItem('token')
-            if (token) {
-                try {
-                    await apiFetch('/api/record', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({ mode: 'image', score, total: questions.length }),
-                    })
-                } catch (err) {
-                    console.error('Error saving result:', err)
-                }
+            try {
+                await apiFetch('/api/record', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ mode: 'image', score, total: questions.length }),
+                })
+            } catch (err) {
+                console.error('Error saving result:', err)
             }
             router.push('/')
         }

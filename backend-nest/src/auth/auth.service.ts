@@ -22,9 +22,10 @@ export class AuthService {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await this.userModel.create({ username, password: hashedPassword });
+        const user = await this.userModel.create({ username, password: hashedPassword });
 
-        return { message: 'Registered successfully' };
+        // 注册成功后自动登录，返回token
+        return this.login(user);
     }
 
     async validateUser(username: string, password: string): Promise<any> {

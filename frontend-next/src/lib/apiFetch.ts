@@ -10,7 +10,8 @@ export async function apiFetch(
     const headers = {
         ...options.headers,
         'x-ai-mode': typeof window !== 'undefined' ? localStorage.getItem('aiMode') || 'free' : 'free',
-        'x-openai-key': typeof window !== 'undefined' ? localStorage.getItem('openaiKey') || '' : ''
+        'x-openai-key': typeof window !== 'undefined' ? localStorage.getItem('openaiKey') || '' : '',
+        ...(typeof window !== 'undefined' && localStorage.getItem('token') ? { 'Authorization': 'Bearer ' + localStorage.getItem('token') } : {})
     }
 
     return fetch(url, { ...options, headers })

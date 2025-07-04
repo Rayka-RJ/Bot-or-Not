@@ -53,12 +53,10 @@ export default function TextGamePage() {
         } else {
             alert(`${t.gameOver} ${score}/${questions.length}`)
             try {
-                const token = localStorage.getItem('token')
                 await apiFetch('/api/record', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ mode: 'text', score, total: questions.length }),
                 })
