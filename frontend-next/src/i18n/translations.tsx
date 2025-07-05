@@ -44,9 +44,14 @@ export const translations = {
         // Login page
         username: "Username",
         password: "Password",
+        usernameExists: "Username already exists",
         // Leaderboard
         yourBest: "Your best",
-        submitValidation: "Please enter a meaningful and complete comments"
+        submitValidation: "Please enter a meaningful and complete comments",
+        // Settings
+        useFreeModel: "Use Free / Local Model",
+        useDeepSeekAPI: "Use My Own DeepSeek API Key",
+        deepSeekAPIKeyPlaceholder: "Enter your DeepSeek API Key"
     },
     zh: {
         welcome: "欢迎",
@@ -93,8 +98,13 @@ export const translations = {
         // Login page
         username: "用户名",
         password: "密码",
+        usernameExists: "用户名已被占用",
         // Leaderboard
         yourBest: "你的最佳成绩",
-        submitValidation: "请输入有意义的完整评论"
+        submitValidation: "请输入有意义的完整评论",
+        // Settings
+        useFreeModel: "使用免费/本地模型",
+        useDeepSeekAPI: "使用我自己的DeepSeek API密钥",
+        deepSeekAPIKeyPlaceholder: "请输入您的DeepSeek API密钥"
     }
 }

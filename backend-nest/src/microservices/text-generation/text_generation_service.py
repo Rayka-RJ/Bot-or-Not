@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-import openai
+import requests
 import os
 from dotenv import load_dotenv
 
@@ -19,8 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Default OpenAI API key from environment
-DEFAULT_API_KEY = os.getenv("OPENAI_API_KEY", "")
+# Default DeepSeek API key from environment
+DEFAULT_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 
 
 class Message(BaseModel):
@@ -53,27 +54,38 @@ async def root():
 
 @app.post("/generate-text")
 async def generate_text(request: TextGenerationRequest):
-    """Generate text using OpenAI API"""
+    """Generate text using DeepSeek API"""
     try:
         api_key = request.api_key or DEFAULT_API_KEY
         if not api_key:
             raise HTTPException(status_code=400, detail="No API key provided")
         
-        client = openai.OpenAI(api_key=api_key)
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
         
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": m.role, "content": m.content} for m in request.messages],
-            temperature=request.temperature,
-            max_tokens=request.max_tokens
-        )
+        payload = {
+            "model": "deepseek-chat",
+            "messages": [{"role": m.role, "content": m.content} for m in request.messages],
+            "temperature": request.temperature,
+            "max_tokens": request.max_tokens
+        }
         
-        return {"text": response.choices[0].message.content}
+        response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload)
+        
+        if response.status_code == 401:
+            raise HTTPException(status_code=401, detail="Invalid API key")
+        elif response.status_code == 429:
+            raise HTTPException(status_code=429, detail="Rate limit exceeded")
+        elif response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=f"API error: {response.text}")
+        
+        response_data = response.json()
+        return {"text": response_data["choices"][0]["message"]["content"]}
     
-    except openai.AuthenticationError:
-        raise HTTPException(status_code=401, detail="Invalid API key")
-    except openai.RateLimitError:
-        raise HTTPException(status_code=429, detail="Rate limit exceeded")
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -86,7 +98,10 @@ async def generate_comments(request: CommentGenerationRequest):
         if not api_key:
             raise HTTPException(status_code=400, detail="No API key provided")
         
-        client = openai.OpenAI(api_key=api_key)
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
         
         examples_text = "\n".join(request.examples)
         
@@ -106,14 +121,20 @@ async def generate_comments(request: CommentGenerationRequest):
             }
         ]
         
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=messages,
-            temperature=0.7,
-            max_tokens=200
-        )
+        payload = {
+            "model": "deepseek-chat",
+            "messages": messages,
+            "temperature": 0.7,
+            "max_tokens": 200
+        }
         
-        generated_text = response.choices[0].message.content
+        response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload)
+        
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=f"API error: {response.text}")
+        
+        response_data = response.json()
+        generated_text = response_data["choices"][0]["message"]["content"]
         
         # Parse the generated comments
         lines = generated_text.split('\n')
@@ -147,7 +168,10 @@ async def generate_fake_news(request: FakeNewsRequest):
         if not api_key:
             raise HTTPException(status_code=400, detail="No API key provided")
         
-        client = openai.OpenAI(api_key=api_key)
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
         
         messages = [
             {
@@ -176,14 +200,20 @@ async def generate_fake_news(request: FakeNewsRequest):
             }
         ]
         
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=messages,
-            temperature=0.7,
-            max_tokens=150
-        )
+        payload = {
+            "model": "deepseek-chat",
+            "messages": messages,
+            "temperature": 0.7,
+            "max_tokens": 150
+        }
         
-        return {"news": response.choices[0].message.content}
+        response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload)
+        
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=f"API error: {response.text}")
+        
+        response_data = response.json()
+        return {"news": response_data["choices"][0]["message"]["content"]}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

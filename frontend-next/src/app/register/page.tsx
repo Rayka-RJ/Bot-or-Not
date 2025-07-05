@@ -17,15 +17,21 @@ export default function RegisterPage() {
     const submit = async () => {
         setError('')
         if (!username) {
-            setError(t.username + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty'))
+            const errorMessage = t.username + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty')
+            setError(errorMessage)
+            alert(errorMessage)
             return
         }
         if (!password) {
-            setError(t.password + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty'))
+            const errorMessage = t.password + ' ' + (language === 'zh' ? '不能为空' : 'cannot be empty')
+            setError(errorMessage)
+            alert(errorMessage)
             return
         }
         if (password.length < 6) {
-            setError(language === 'zh' ? '密码长度不能少于6位' : 'Password must be at least 6 characters')
+            const errorMessage = language === 'zh' ? '密码长度不能少于6位' : 'Password must be at least 6 characters'
+            setError(errorMessage)
+            alert(errorMessage)
             return
         }
         try {
@@ -37,8 +43,24 @@ export default function RegisterPage() {
 
             if (!res.ok) {
                 const errorText = await res.text(); 
-                setError(errorText)
-                return
+                try {
+                    // 尝试解析JSON错误信息
+                    const errorData = JSON.parse(errorText);
+                    if (errorData.message && errorData.message.includes('already exists')) {
+                        const errorMessage = t.usernameExists;
+                        setError(errorMessage);
+                        alert(errorMessage);
+                    } else {
+                        const errorMessage = errorData.message || errorData.error || (language === 'zh' ? '注册失败' : 'Registration failed');
+                        setError(errorMessage);
+                        alert(errorMessage);
+                    }
+                } catch (parseError) {
+                    // 如果不是JSON格式，直接显示错误文本
+                    setError(errorText);
+                    alert(errorText);
+                }
+                return;
             }
 
             const data = await res.json()
@@ -52,7 +74,9 @@ export default function RegisterPage() {
             
         } catch (error) {
             console.error('Registration error:', error)
-            setError(language === 'zh' ? '注册失败，请重试。' : 'Registration failed. Please try again.')
+            const errorMessage = language === 'zh' ? '注册失败，请重试。' : 'Registration failed. Please try again.'
+            setError(errorMessage)
+            alert(errorMessage)
         }
     }
 

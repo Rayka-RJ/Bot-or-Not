@@ -13,7 +13,7 @@ export class GameController {
     @Get('generate-multi')
     @ApiOperation({ summary: 'Generate multiple choice questions' })
     async generateMultiChoice(
-        @Headers('x-openai-key') apiKey?: string,
+        @Headers('x-deepseek-key') apiKey?: string,
         @Headers('x-ai-mode') aiMode?: string,
     ) {
         return this.gameService.generateMultipleChoice(apiKey);
@@ -22,7 +22,7 @@ export class GameController {
     @Get('generate-tf')
     @ApiOperation({ summary: 'Generate true/false news questions' })
     async generateTrueFalse(
-        @Headers('x-openai-key') apiKey?: string,
+        @Headers('x-deepseek-key') apiKey?: string,
         @Headers('x-ai-mode') aiMode?: string,
     ) {
         return this.gameService.generateTrueFalse(apiKey);

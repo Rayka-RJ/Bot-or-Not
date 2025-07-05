@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import styles from './settingsModal.module.css'
+import { useLanguage } from '@/contexts/languageContext'
+import { translations } from '@/i18n/translations'
 
 interface SettingsModalProps {
     onClose: () => void
@@ -10,19 +12,21 @@ interface SettingsModalProps {
 const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
     const [mode, setMode] = useState('')
     const [customKey, setCustomKey] = useState('')
+    const { language } = useLanguage()
+    const t = translations[language]
 
     useEffect(() => {
         // Initialize from localStorage on client side
         setMode(localStorage.getItem('aiMode') || 'free')
-        setCustomKey(localStorage.getItem('openaiKey') || '')
+        setCustomKey(localStorage.getItem('deepseekKey') || '')
     }, [])
 
     useEffect(() => {
         localStorage.setItem('aiMode', mode)
-        if (mode === 'openai') {
-            localStorage.setItem('openaiKey', customKey)
+        if (mode === 'deepseek') {
+            localStorage.setItem('deepseekKey', customKey)
         } else {
-            localStorage.removeItem('openaiKey')
+            localStorage.removeItem('deepseekKey')
         }
     }, [mode, customKey])
 
@@ -38,26 +42,26 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
                         checked={mode === 'free'}
                         onChange={() => setMode('free')}
                     />
-                    Use Free / Local Model
+                    {t.useFreeModel}
                 </label>
 
                 <label>
                     <input
                         type="radio"
-                        value="openai"
-                        checked={mode === 'openai'}
-                        onChange={() => setMode('openai')}
+                        value="deepseek"
+                        checked={mode === 'deepseek'}
+                        onChange={() => setMode('deepseek')}
                     />
-                    Use My Own OpenAI&nbsp;API&nbsp;Key
+                    {t.useDeepSeekAPI}
                 </label>
 
-                {mode === 'openai' && (
+                {mode === 'deepseek' && (
                     <div>
                         <input
                             type="text"
                             value={customKey}
                             onChange={(e) => setCustomKey(e.target.value)}
-                            placeholder="Enter your OpenAI API Key"
+                            placeholder={t.deepSeekAPIKeyPlaceholder}
                         />
                     </div>
                 )}
